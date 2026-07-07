@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import time
 import hashlib
 
@@ -12,13 +12,15 @@ def get_csrf_token():
         # Pehla request se cookies aur CSRF token get karein
         response = session.get("https://www.instagram.com/")
         if response.status_code == 200:
-            # CSRF token cookie se lena ya hidden input se lena
+            # CSRF token cookie se lena
             csrf_token = session.cookies.get('csrftoken')
             if not csrf_token:
                 # Agar cookie nahi mila to try hidden input parsing
                 from bs4 import BeautifulSoup
                 soup = BeautifulSoup(response.text, 'html.parser')
                 csrf_token = soup.find('meta', attrs={'name': 'csrfmiddlewaretoken'})['content']
+            
+            # Simple session return karein
             return session, csrf_token
     except Exception as e:
         print(f"Error fetching token: {e}")
@@ -51,8 +53,13 @@ def login_to_instagram(username, password):
         'Sec-Fetch-Dest': 'empty',
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-origin',
-        'Cookie': session.cookies.get_dict()
     }
+    
+    # FIX: Cookie ko Dictionary se String mein convert karna
+    # Yeh error wala part fix karega
+    cookies_dict = session.cookies.get_dict()
+    cookie_header = "; ".join([f"{k}={v}" for k, v in cookies_dict.items()])
+    headers['Cookie'] = cookie_header
 
     data = {
         'username': username,
@@ -67,6 +74,10 @@ def login_to_instagram(username, password):
         # Login request bhejein
         response = session.post(login_url, headers=headers, data=data)
         
+        # Debugging ke liye response text check karein
+        print(f"Response Status: {response.status_code}")
+        print(f"Response Text: {response.text[:500]}") # Pehla 500 characters print karein
+
         if response.status_code == 200:
             # Agar response mein 'authenticated' true hai ya 'ds_user_id' cookie set hai
             if 'ds_user_id' in session.cookies:
@@ -74,9 +85,10 @@ def login_to_instagram(username, password):
             else:
                 return False, "❌ FAILURE: Password galat hai."
         else:
-            return False, f"❌ ERROR: Status Code {response.status_code} aaya."
+            return False, f"❌ ERROR: Server Error (Status: {response.status_code})"
             
     except Exception as e:
+        print(f"Exception: {e}")
         return False, f"❌ Exception: {e}"
 
 @app.route('/')
@@ -89,7 +101,12 @@ def handle_login():
     password = request.form.get('password')
     
     if username and password:
+        print(f"Testing for: {username}")
         success, message = login_to_instagram(username, password)
+        
+        # Console mein result bhi print karega
+        print(f"RESULT: {message}")
+        
         return render_template('index.html', result=message, username=username)
     return render_template('index.html', result="⚠️ Please enter both username and password.")
 
