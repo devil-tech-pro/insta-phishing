@@ -10,7 +10,6 @@ def get_csrf_token():
     """Instagram se CSRF token aur session fetch karta hai."""
     session = requests.Session()
     try:
-        # Pehla request
         response = session.get("https://www.instagram.com/")
         if response.status_code == 200:
             csrf_token = session.cookies.get('csrftoken')
@@ -37,7 +36,7 @@ def login_to_instagram(username, password):
     hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
     enc_password = f"PWD{timestamp}#{hashed_password}"
 
-    # Headers (Updated: X-IG-App-ID add kiya)
+    # Headers (Critical: X-IG-App-ID aur queryParams fix kiya)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         'X-CSRFToken': csrf_token,
@@ -60,11 +59,11 @@ def login_to_instagram(username, password):
     cookie_header = "; ".join([f"{k}={v}" for k, v in cookies_dict.items()])
     headers['Cookie'] = cookie_header
 
-    # Data Payload (Fixed format)
+    # Data Payload (Fixed format: {{}} instead of {})
     data = {
         'username': username,
         'enc_password': enc_password,
-        'queryParams': '{{}}', # Double braces important hain
+        'queryParams': '{{}}', 
         'optIntoOneTap': 'false',
         'stopDeletion': 'false',
         'trustedDevice': 'false'
