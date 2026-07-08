@@ -27,7 +27,6 @@
         margin-left: 30px;
         height: 450px;
         width: 600px;
-        object-fit: cover; /* Image ko cover karne ke liye good hai */
     }
 
     .login {
@@ -53,11 +52,6 @@
         background-color: #121212;
         border: 0.1px solid gray;
         border-radius: 3px;
-        outline: none; /* Focus hone par black border hatane ke liye */
-    }
-
-    input:focus {
-        border-color: rgb(55, 55, 183);
     }
 
     button {
@@ -68,17 +62,17 @@
         width: 270px;
         border-radius: 10px;
         border: none;
-        cursor: pointer;
     }
-    
-    button:hover {
-        background-color: rgb(40, 40, 140);
+    button a{
+        text-decoration: none;
+        color: white;
+        font-family: Arial;
     }
 
     .facebook {
         display: flex;
         justify-content: center;
-        align-items: center;
+
     }
 
     .facebook img {
@@ -93,81 +87,40 @@
         margin-left: 10px;
         margin-top: 3px;  
     }
-    
     .login a{
         text-decoration: none;
         color: white;
         font-family: Arial;
     }
-    
     .login p a{
         text-decoration: none;
         color: rgb(13, 0, 255);
         font-family: Arial, Helvetica, sans-serif;
-    }
 
-    /* Flask result message ke liye */
-    .result-message {
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: bold;
-        display: none;
-    }
-    
-    .success {
-        background-color: #0095f6;
-        color: white;
-        display: block;
-    }
-    
-    .failure {
-        background-color: #ff4d4d;
-        color: white;
-        display: block;
     }
 </style>
 
 <body>
     <div class="main">
-        <!-- Image URL change kar diya hai URL se run karne ke liye -->
         <div class="pic">
-            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop" alt="pic">
+            <img src="./instapic.png" alt="pic">
         </div>
         <div class="login">
-            <!-- Logo URL -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png" alt="">
-            
-            <!-- Inputs mein name attributes add kiye hain -->
-            <input type="text" name="username" placeholder="Phone number,username, or email"><br>
-            <input type="password" name="password" placeholder="Password"><br>
-            
-            <!-- Form action aur method set kiya hain Flask ke liye -->
-            <form action="/login" method="post">
-                <button type="submit">Log in</button>
-            </form>
-
+            <img src="instalogo.png" alt="">
+            <input type="text" placeholder="Phone number,username, or email"><br>
+            <input type="password" placeholder="Password"><br>
+            <button> <a href="Instagram.html">Log in</a></button>
             <div class="line">
                 <div class="left"></div>
                 <p>OR</p>
                 <div class="right"></div>
             </div>
-            
             <div class="facebook">
                 <img src="https://img.icons8.com/?size=96&id=118497&format=png" alt="">
                 <a href="https://www.facebook.com/r.php/">Login with Facebook</a>
             </div>
-            
-            <a href="#" style="color: white; text-decoration: none;">Forget password?</a>
-            <p style="color: white; font-family: Arial, Helvetica, sans-serif;">Don't have an account? <a href="#" style="color: rgb(13, 0, 255); text-decoration: none;">Sign up</a></p>
-            
-            <!-- Flask result message -->
-            {% if result %}
-            <div class="result-message {% if 'SUCCESS' in result %}success{% else %}failure{% endif %}">
-                {{ result }}
-            </div>
-            {% endif %}
+            <a href="a">Forget password?</a>
+            <p>Don't have an account? <a href="a">Sign up</a></p>
         </div>
     </div>
 
